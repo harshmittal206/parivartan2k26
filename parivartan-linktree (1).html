@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parivartan – CGC Landran</title>
+<style>
+:root{
+  --bg:#F4F1FB; --ink:#1E1442; --muted:#5E5680; --card:#FFFFFF; --line:#DDD6F0;
+  --accent:#C2185B; --gold:#F2A900; --c-tech:#2F6BFF; --c-non:#0E9F8E; --c-cul:#E0472B; --c-sch:#8A3FD1;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#130C2B;--ink:#F1EDFF;--muted:#A79FCB;--card:#1E1540;--line:#332A5E;--accent:#FF5C9A;}
+}
+:root[data-theme="dark"]{--bg:#130C2B;--ink:#F1EDFF;--muted:#A79FCB;--card:#1E1540;--line:#332A5E;--accent:#FF5C9A;}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Poppins","Segoe UI",system-ui,sans-serif;min-height:100vh;
+  background-image:radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 55%)}
+.wrap{max-width:460px;margin:0 auto;padding:20px 18px 40px}
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{height:64px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)}
+.logo img{height:100%;width:auto;display:block}
+.hero{text-align:center;margin:14px 0 22px}
+.mark{width:100%;max-width:260px;margin:0 auto 8px}
+.mark img{width:100%;height:auto;display:block}
+h1{font-size:28px;margin:6px 0 2px;letter-spacing:.3px}
+.sub{color:var(--muted);font-size:14px;margin:0}
+/* links */
+.list{display:flex;flex-direction:column;gap:12px}
+.link{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c,var(--accent));border-radius:16px;padding:16px 16px;text-decoration:none}
+.link:hover{border-color:var(--c,var(--accent))}
+.link:focus-visible,.btn:focus-visible,.back:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.link b{display:block;font-size:16px}
+.link small{color:var(--muted);font-size:12.5px}
+.link .go{margin-left:auto;font-size:20px;color:var(--muted)}
+.back{background:none;border:0;color:var(--muted);font:inherit;font-size:14px;cursor:pointer;padding:6px 0;margin-bottom:8px}
+.title{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:22px}
+.dot{width:12px;height:28px;border-radius:6px;background:var(--c)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip{font-size:12.5px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.card p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted)}
+.btn{display:block;text-align:center;text-decoration:none;font-weight:600;border-radius:14px;padding:14px;margin-bottom:10px;font-size:15px}
+.btn.rule{background:var(--card);border:2px solid var(--c);color:var(--ink)}
+.btn.reg{background:var(--c);color:#fff}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="logo" id="logoCgc"></div>
+    <div class="logo" id="logoDsw"></div>
+  </div>
+
+  <div class="hero">
+    <div class="mark" id="logoPar"></div>
+    <p class="sub">The annual fest of CGC Landran</p>
+  </div>
+
+  <main id="view" aria-live="polite"></main>
+
+  <p class="foot">Chandigarh Group of Colleges, Landran</p>
+</div>
+
+<script>
+/* ============ EDIT HERE ============ */
+// Logos: paste an image as a data: URI (or leave empty to show a placeholder)
+const LOGOS = {
+  cgc: "cgclogo1.png",
+  dsw: "dsw.png",
+  parivartan: "logo4.png"
+};
+
+// Categories. Replace "#" with your rule book link and registration form link for each one.
+const CATEGORIES = [
+  { id:"tech", name:"Technical events",     note:"Code, build, compete", color:"var(--c-tech)", rules:"#", reg:"https://forms.gle/rWFUKSnByS2n6Gjd9" },
+  { id:"non",  name:"Non-technical events", note:"Quiz, games, fun",     color:"var(--c-non)",  rules:"#", reg:"https://forms.gle/qrQM5AqnEJyuttFv7" },
+  { id:"cul",  name:"Cultural events",      note:"Dance, music, drama",  color:"var(--c-cul)",  rules:"#", reg:"https://forms.gle/rPz3VU8WS5sWtPop7" }
+];
+/* ============ END EDIT ============ */
+
+function slot(el, src, label){
+  el.innerHTML = "";
+  if(src){ const i=document.createElement("img"); i.src=src; i.alt=label; el.appendChild(i); }
+  else { el.textContent = label; }
+}
+slot(document.getElementById("logoCgc"), LOGOS.cgc, "CGC Landran logo");
+slot(document.getElementById("logoDsw"), LOGOS.dsw, "DSW logo");
+slot(document.getElementById("logoPar"), LOGOS.parivartan, "PARIVARTAN");
+
+const view = document.getElementById("view");
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function btn(href, cls, label){
+  const ok = href && href !== "#";
+  return ok
+    ? `<a class="btn ${cls}" href="${esc(href)}" target="_blank" rel="noopener">${label}</a>`
+    : `<span class="btn ${cls}" style="opacity:.5">${label} (coming soon)</span>`;
+}
+function home(){
+  view.innerHTML = '<div class="list">' + CATEGORIES.map(c =>
+    `<a class="link" href="#/${c.id}" data-go="${c.id}" style="--c:${c.color}"><span><b>${esc(c.name)}</b><small>${esc(c.note)}</small></span><span class="go" aria-hidden="true">›</span></a>`
+  ).join("") + '</div>';
+}
+function category(c){
+  view.innerHTML = `<a class="back" href="#/" data-go="" style="text-decoration:none;display:inline-block">‹ All categories</a>
+    <h2 class="title" style="--c:${c.color}"><span class="dot"></span>${esc(c.name)}</h2>
+    <div style="--c:${c.color}">
+      ${btn(c.rules,"rule","Read the rule book")}
+      ${btn(c.reg,"reg","Register now")}
+    </div>`;
+}
+function show(p){
+  const c = CATEGORIES.find(x=>x.id===p);
+  if(c) category(c); else home();
+  try{ if(location.hash !== "#/"+p) location.hash = "#/"+p; }catch(err){}
+  try{ window.scrollTo(0,0); }catch(err){}
+}
+function route(){ show(location.hash.replace(/^#\/?/,"")); }
+document.addEventListener("click", ev=>{
+  const a = ev.target.closest("[data-go]");
+  if(!a) return;
+  ev.preventDefault();
+  show(a.getAttribute("data-go"));
+});
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
